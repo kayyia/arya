@@ -43,6 +43,18 @@
             to { opacity: 1; }
         }
 
+        /* tambahan keyframes untuk confetti jatuh */
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
         .popup-overlay {
             position: fixed;
             top: 0;
@@ -683,4 +695,195 @@
         const mainContent = document.getElementById('mainContent');
         const nextBtn1 = document.getElementById('nextBtn1');
         const nextBtn2 = document.getElementById('nextBtn2');
-        const nextBtn3 = document.getElementById(
+        const nextBtn3 = document.getElementById('nextBtn3');
+        const birthdayPerson = document.getElementById('birthdayPerson');
+        const namaPopup = document.getElementById('namaPopup');
+        const birthdayPhoto = document.getElementById('birthdayPhoto');
+        const wishBtn = document.getElementById('wishBtn');
+        const musicBtn = document.getElementById('musicBtn');
+        const birthdayMusic = document.getElementById('birthdayMusic');
+        const celebrationElements = document.getElementById('celebrationElements');
+
+        // Hapus referensi ke elemen yang tidak ada (usia, namaUcapan) untuk menghindari error
+        // const usia = document.getElementById('usia');   // tidak ada di HTML
+        // const namaUcapan = document.getElementById('namaUcapan'); // tidak ada
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadingScreen.classList.add('show');
+
+            namaPopup.textContent = birthdayData.nama;
+            birthdayPerson.textContent = birthdayData.nama;
+            birthdayPhoto.src = birthdayData.foto;
+
+            // Bagian ini dihapus karena elemen tidak ada
+            // usia.textContent = birthdayData.usia;
+            // namaUcapan.textContent = birthdayData.nama;
+
+            setTimeout(() => {
+                loadingScreen.classList.remove('show');
+                popup1.style.display = 'flex';
+            }, 2000);
+
+            createCelebrationElements();
+        });
+
+
+        function createCelebrationElements() {
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.animationDelay = Math.random() * 5 + 's';
+                confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                celebrationElements.appendChild(confetti);
+
+                setTimeout(() => {
+                    confetti.style.animation = `fall ${Math.random() * 3 + 2}s linear forwards`;
+                    confetti.style.opacity = '1';
+                }, 100);
+            }
+
+            const icons = ['🎀', '🎶', '🌼', '🌸', '🌻', '💙', '🌟', '😙'];
+            for (let i = 0; i < 15; i++) {
+                const icon = document.createElement('div');
+                icon.className = 'floating-icon';
+                icon.textContent = icons[Math.floor(Math.random() * icons.length)];
+                icon.style.left = Math.random() * 100 + '%';
+                icon.style.top = Math.random() * 100 + '%';
+                icon.style.animationDelay = Math.random() * 5 + 's';
+                icon.style.fontSize = (Math.random() * 1.5 + 1.5) + 'rem';
+                celebrationElements.appendChild(icon);
+            }
+        }
+
+        nextBtn1.addEventListener('click', function() {
+            popup1.style.display = 'none';
+            popup2.style.display = 'flex';
+
+            const popup2Element = document.querySelector('#popup2 .popup');
+            popup2Element.style.animation = 'none';
+            setTimeout(() => {
+                popup2Element.style.animation = 'popupAppear 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
+            }, 10);
+        });
+
+        nextBtn2.addEventListener('click', function() {
+            popup2.style.display = 'none';
+            popup3.style.display = 'flex';
+
+            const popup3Element = document.querySelector('#popup3 .popup');
+            popup3Element.style.animation = 'none';
+            setTimeout(() => {
+                popup3Element.style.animation = 'popupAppear 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
+            }, 10);
+        });
+
+        nextBtn3.addEventListener('click', function() {
+            popup3.style.display = 'none';
+
+            setTimeout(() => {
+                mainContent.classList.add('show');
+
+                birthdayMusic.play().then(() => {
+                    musicBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                }).catch(error => {
+                    console.log("Autoplay diblokir, pengguna harus mengklik tombol musik");
+                });
+
+                createExtraConfetti();
+            }, 500);
+        });
+
+        function createExtraConfetti() {
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.top = '-20px';
+                    confetti.style.backgroundColor = i % 3 === 0 ? 'var(--primary)' : i % 3 === 1 ? 'var(--secondary)' :
+                        'var(--accent)';
+                    confetti.style.width = (Math.random() * 15 + 8) + 'px';
+                    confetti.style.height = confetti.style.width;
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    confetti.style.animation = `fall ${Math.random() * 3 + 2}s linear forwards`;
+                    confetti.style.opacity = '1';
+                    celebrationElements.appendChild(confetti);
+
+                    setTimeout(() => {
+                        if (confetti.parentNode) {
+                            confetti.parentNode.removeChild(confetti);
+                        }
+                    }, 5000);
+                }, i * 50);
+            }
+        }
+
+        wishBtn.addEventListener('click', function() {
+            wishBtn.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                wishBtn.style.transform = 'scale(1)';
+            }, 200);
+
+            const messages = [
+                "doa terbaik arya menyertai kamuu selalu",
+                "Semoga semua impian kamu menjadi kenyataan sayang 😙",
+                "kebahagiaan dan kesehatan selalu menyertai kamuuu",
+                "semoga tahun ini menjadi tahun terbaik dalam hidup kamu syipaa"
+            ];
+
+            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+            alert(` ${randomMessage}`);
+
+            createExtraConfetti();
+        });
+
+        let musicPlaying = false;
+        musicBtn.addEventListener('click', function() {
+            if (musicPlaying) {
+                birthdayMusic.pause();
+                musicBtn.innerHTML = '<i class="fas fa-music"></i>';
+                musicPlaying = false;
+            } else {
+                birthdayMusic.play();
+                musicBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                musicPlaying = true;
+            }
+
+            musicBtn.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                musicBtn.style.transform = 'scale(1)';
+            }, 300);
+        });
+
+        birthdayPhoto.onerror = function() {
+            this.src = "ran.jpg";
+            console.log("Gambar utama gagal dimuat, menggunakan gambar cadangan");
+        };
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 20,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        window.addEventListener('resize', function() {
+            if (window.innerWidth < 768) {
+                document.querySelector('.title').style.fontSize = '3.2rem';
+            } else {
+                document.querySelector('.title').style.fontSize = '4.5rem';
+            }
+        });
+    </script>
+</body>
+</html>
